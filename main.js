@@ -1,4 +1,7 @@
+const rootEl = document.querySelector('.arenas');
+
 const player1 = {
+  player: 1,
   name: 'Scorpion',
   hp: 10,
   img: 'http://reactmarathon-api.herokuapp.com/assets/scorpion.gif',
@@ -9,6 +12,7 @@ const player1 = {
 };
 
 const player2 = {
+    player: 2,
     name: 'Sub Zero',
     hp: 50,
     img: 'http://reactmarathon-api.herokuapp.com/assets/subzero.gif',
@@ -18,28 +22,34 @@ const player2 = {
     }
 };
 
+function createElement(tagName, className) {
+    const newEl = document.createElement(tagName);
+
+    if (className) {
+        newEl.classList.add(className);
+    }
+
+    return newEl
+}
+
 function createPlayer(playerClass, playerObj) {
-    const newPlayerBox = document.createElement('div');
+    const newPlayerBox = createElement('div', 'player' + playerObj.player);
     newPlayerBox.classList.add(playerClass);
 
-    const progressBarEl = document.createElement('div');
-    progressBarEl.classList.add('progressbar');
+    const progressBarEl = createElement('div', 'progressbar');
 
-    const lifeEl = document.createElement('div');
-    lifeEl.classList.add('life');
+    const lifeEl = createElement('div', 'life');
     lifeEl.style.width =  playerObj.hp + '%';
 
-    const nameEl = document.createElement('div');
-    nameEl.classList.add('name');
+    const nameEl = createElement('div', 'name');
     nameEl.innerText = playerObj.name;
 
     progressBarEl.appendChild(lifeEl);
     progressBarEl.appendChild(nameEl);
 
-    const characterEl = document.createElement('div');
-    characterEl.classList.add('character');
+    const characterEl = createElement('div', 'character');
 
-    const imgEl = document.createElement('img');
+    const imgEl = createElement('img');
     imgEl.src = playerObj.img;
 
     characterEl.appendChild(imgEl);
@@ -47,10 +57,9 @@ function createPlayer(playerClass, playerObj) {
     newPlayerBox.appendChild(progressBarEl);
     newPlayerBox.appendChild(characterEl);
 
-    const rootEl = document.querySelector('.arenas');
-
-    rootEl.appendChild(newPlayerBox);
+    return newPlayerBox;
 }
 
-createPlayer('player1', player1);
-createPlayer('player2', player2);
+rootEl.appendChild(createPlayer('player1', player1));
+rootEl.appendChild(createPlayer('player1', player2));
+
