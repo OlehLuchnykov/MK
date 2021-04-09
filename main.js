@@ -32,9 +32,8 @@ function createElement(tagName, className) {
     return newEl
 }
 
-function createPlayer(playerClass, playerObj) {
+function createPlayer(playerObj) {
     const newPlayerBox = createElement('div', 'player' + playerObj.player);
-    newPlayerBox.classList.add(playerClass);
 
     const progressBarEl = createElement('div', 'progressbar');
 
@@ -60,6 +59,6 @@ function createPlayer(playerClass, playerObj) {
     return newPlayerBox;
 }
 
-rootEl.appendChild(createPlayer('player1', player1));
-rootEl.appendChild(createPlayer('player1', player2));
+rootEl.appendChild(createPlayer(player1));
+rootEl.appendChild(createPlayer(player2));
 
