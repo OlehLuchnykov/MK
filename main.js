@@ -1,9 +1,10 @@
 const rootEl = document.querySelector('.arenas');
+const randomBtnEl = document.querySelector('.arenas .button');
 
 const player1 = {
   player: 1,
   name: 'Scorpion',
-  hp: 10,
+  hp: 100,
   img: 'http://reactmarathon-api.herokuapp.com/assets/scorpion.gif',
   weapon: ['gun', 'knife', 'bomb', 'sword'],
   attack: function () {
@@ -14,7 +15,7 @@ const player1 = {
 const player2 = {
     player: 2,
     name: 'Sub Zero',
-    hp: 50,
+    hp: 100,
     img: 'http://reactmarathon-api.herokuapp.com/assets/subzero.gif',
     weapon: ['gun', 'knife', 'bomb', 'sword'],
     attack: function () {
@@ -58,6 +59,35 @@ function createPlayer(playerObj) {
 
     return newPlayerBox;
 }
+
+function changeHP(playerObj) {
+    const playerLife = document.querySelector('.player' + playerObj.player + ' .life');
+
+
+    playerObj.hp = playerObj.hp - randomizer();
+    playerLife.style.width = playerObj.hp < 0 ? 0 + '%' : playerObj.hp + '%';
+
+    if(playerObj.hp <= 0) {
+        randomBtnEl.disabled = true;
+        playerObj.player === 1 ? rootEl.appendChild(playerWin(player2.name)) : rootEl.appendChild(playerWin(player1.name));
+    }
+}
+
+function playerWin(name) {
+    const winTitle = createElement('div', 'loseTitle');
+    winTitle.innerText = name + ' win';
+
+    return winTitle;
+}
+
+function randomizer() {
+    return Math.ceil(Math.random() * 20);
+}
+
+randomBtnEl.addEventListener('click', function () {
+    changeHP(player1);
+    changeHP(player2);
+});
 
 rootEl.appendChild(createPlayer(player1));
 rootEl.appendChild(createPlayer(player2));
