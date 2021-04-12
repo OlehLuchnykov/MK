@@ -63,21 +63,23 @@ function createPlayer(playerObj) {
 function changeHP(playerObj) {
     const playerLife = document.querySelector('.player' + playerObj.player + ' .life');
 
-
-    playerObj.hp = playerObj.hp < 0 ? 0 : playerObj.hp - randomizer();
-    playerLife.style.width = playerObj.hp + '%';
+    playerObj.hp = playerObj.hp - randomizer();
 
     if(playerObj.hp <= 0) {
-        randomBtnEl.disabled = true;
-        playerObj.player === 1 ? rootEl.appendChild(playerWin(player2.name)) : rootEl.appendChild(playerWin(player1.name));
+        playerObj.hp = 0;
     }
+    playerLife.style.width = playerObj.hp + '%';
 }
 
-function playerWin(name) {
-    const winTitle = createElement('div', 'loseTitle');
-    winTitle.innerText = name + ' win';
+function showResultText(name) {
+    const resultTitle = createElement('div', 'loseTitle');
+    if(name) {
+        resultTitle.innerText = name + ' win';
+    }else {
+        resultTitle.innerText = 'Draw';
+    }
 
-    return winTitle;
+    return resultTitle;
 }
 
 function randomizer() {
@@ -87,6 +89,20 @@ function randomizer() {
 randomBtnEl.addEventListener('click', function () {
     changeHP(player1);
     changeHP(player2);
+
+    if(player1.hp === 0 || player2.hp === 0) {
+        randomBtnEl.disabled = true;
+    }
+
+    if(player1.hp === 0 && player1.hp < player2.hp) {
+        rootEl.appendChild(showResultText(player2.name));
+    } else if (player2.hp === 0 && player2.hp < player1.hp) {
+        rootEl.appendChild(showResultText(player1.name));
+    } else if (player1.hp === 0 && player2.hp === 0) {
+        rootEl.appendChild(showResultText());
+
+    }
+
 });
 
 rootEl.appendChild(createPlayer(player1));
