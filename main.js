@@ -64,8 +64,8 @@ function changeHP(playerObj) {
     const playerLife = document.querySelector('.player' + playerObj.player + ' .life');
 
 
-    playerObj.hp = playerObj.hp - randomizer();
-    playerLife.style.width = playerObj.hp < 0 ? 0 + '%' : playerObj.hp + '%';
+    playerObj.hp = playerObj.hp < 0 ? 0 : playerObj.hp - randomizer();
+    playerLife.style.width = playerObj.hp + '%';
 
     if(playerObj.hp <= 0) {
         randomBtnEl.disabled = true;
