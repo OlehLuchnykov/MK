@@ -1,5 +1,15 @@
 const rootEl = document.querySelector('.arenas');
-const randomBtnEl = document.querySelector('.arenas .button');
+// const randomBtnEl = document.querySelector('.arenas .button');
+
+const HIT = {
+  head: 30,
+  body: 25,
+  foot: 20,
+}
+const ATTACK = ['head', 'body', 'foot'];
+
+const form = document.querySelector('.control');
+
 
 const player1 = {
   player: 1,
@@ -10,9 +20,9 @@ const player1 = {
   attack: function () {
     console.log(this.name + 'Fight...')
   },
-  changeHP: changeHP,
-  elHP: elHP,
-  renderHP: renderHP,
+  changeHP,
+  elHP,
+  renderHP,
 };
 
 const player2 = {
@@ -24,9 +34,9 @@ const player2 = {
   attack: function () {
     console.log(this.name + 'Fight...')
   },
-  changeHP: changeHP,
-  elHP: elHP,
-  renderHP: renderHP,
+  changeHP,
+  elHP,
+  renderHP,
 };
 
 function createElement(tagName, className) {
@@ -77,14 +87,17 @@ function changeHP(hpValue) {
   }
 
 }
+
 function elHP() {
   return document.querySelector('.player' + this.player + ' .life');
 
 }
+
 function renderHP() {
   this.elHP().style.width = this.hp + '%';
 
 }
+
 function showResultText(name) {
   const resultTitle = createElement('div', 'loseTitle');
   if (name) {
@@ -96,31 +109,48 @@ function showResultText(name) {
   return resultTitle;
 
 }
-function randomizer() {
-  return Math.ceil(Math.random() * 20);
 
+function randomizer(val) {
+  return Math.ceil(Math.random() * val);
 }
 
-randomBtnEl.addEventListener('click', function () {
-  player1.changeHP(randomizer());
-  player2.changeHP(randomizer());
-  player1.renderHP();
-  player2.renderHP();
+// randomBtnEl.addEventListener('click', function () {
+//   player1.changeHP(randomizer());
+//   player2.changeHP(randomizer());
+//   player1.renderHP();
+//   player2.renderHP();
+//
+//   if (player1.hp === 0 || player2.hp === 0) {
+//     randomBtnEl.disabled = true;
+//     createReloadButton();
+//   }
+//
+//   if (player1.hp === 0 && player1.hp < player2.hp) {
+//     rootEl.appendChild(showResultText(player2.name));
+//   } else if (player2.hp === 0 && player2.hp < player1.hp) {
+//     rootEl.appendChild(showResultText(player1.name));
+//   } else if (player1.hp === 0 && player2.hp === 0) {
+//     rootEl.appendChild(showResultText());
+//   }
+//
+// });
+
+function fight(firstPlayer, secondPlayer) {
+  if (secondPlayer.hit !== firstPlayer.defence) {
+    player1.changeHP(secondPlayer.value);
+    player1.renderHP();
+  }
+  if (firstPlayer.hit !== secondPlayer.defence) {
+    player2.changeHP(firstPlayer.value);
+    player2.renderHP();
+  }
 
   if (player1.hp === 0 || player2.hp === 0) {
-    randomBtnEl.disabled = true;
+    form.disabled = true;
     createReloadButton();
   }
-
-  if (player1.hp === 0 && player1.hp < player2.hp) {
-    rootEl.appendChild(showResultText(player2.name));
-  } else if (player2.hp === 0 && player2.hp < player1.hp) {
-    rootEl.appendChild(showResultText(player1.name));
-  } else if (player1.hp === 0 && player2.hp === 0) {
-    rootEl.appendChild(showResultText());
-  }
-
-});
+  showFightResult();
+}
 
 function createReloadButton() {
   const reloadBtnWrapEl = createElement('div', 'reloadWrap');
@@ -130,8 +160,54 @@ function createReloadButton() {
   reloadBtnWrapEl.appendChild(reloadBtnEl);
   rootEl.appendChild(reloadBtnWrapEl);
 
-  reloadBtnEl.addEventListener('click', function() {
+  reloadBtnEl.addEventListener('click', function () {
     window.location.reload();
   });
 }
 
+form.addEventListener('submit', function (e) {
+  e.preventDefault();
+  const enemy = enemyAttack();
+  const hero = heroAttack();
+
+  fight(hero, enemy);
+});
+
+function enemyAttack() {
+  const hit = ATTACK[randomizer(3) - 1];
+  const defence = ATTACK[randomizer(3) - 1];
+  return {
+    value: randomizer(HIT[hit]),
+    hit,
+    defence
+  }
+}
+
+function heroAttack() {
+  const attack = {};
+
+  for (let item of form) {
+    if (item.checked && item.name === 'hit') {
+      attack.value = randomizer(HIT[item.value]);
+      attack.hit = item.value;
+    }
+
+    if (item.checked && item.name === 'defence') {
+      attack.value = randomizer(HIT[item.value]);
+      attack.defence = item.value;
+    }
+
+    item.checked = false;
+  }
+  return attack;
+}
+
+function showFightResult() {
+  if (player1.hp === 0 && player1.hp < player2.hp) {
+    rootEl.appendChild(showResultText(player2.name));
+  } else if (player2.hp === 0 && player2.hp < player1.hp) {
+    rootEl.appendChild(showResultText(player1.name));
+  } else if (player1.hp === 0 && player2.hp === 0) {
+    rootEl.appendChild(showResultText());
+  }
+}
