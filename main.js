@@ -136,19 +136,15 @@ function randomizer(val) {
 // });
 
 function fight(firstPlayer, secondPlayer) {
-  if (secondPlayer.hit !== firstPlayer.defence) {
-    player1.changeHP(secondPlayer.value);
-    player1.renderHP();
-  }
-  if (firstPlayer.hit !== secondPlayer.defence) {
-    player2.changeHP(firstPlayer.value);
-    player2.renderHP();
-  }
+
+  hitResult(firstPlayer.defence, secondPlayer.hit, secondPlayer.value, player1);
+  hitResult(secondPlayer.defence, firstPlayer.hit, firstPlayer.value, player2);
 
   if (player1.hp === 0 || player2.hp === 0) {
     form.disabled = true;
     createReloadButton();
   }
+
   showFightResult();
 }
 
@@ -209,5 +205,13 @@ function showFightResult() {
     rootEl.appendChild(showResultText(player1.name));
   } else if (player1.hp === 0 && player2.hp === 0) {
     rootEl.appendChild(showResultText());
+  }
+}
+
+function hitResult(defence, hit, hitValue, player) {
+  if (hit !== defence) {
+    console.log(player);
+    player.changeHP(hitValue);
+    player.renderHP();
   }
 }
