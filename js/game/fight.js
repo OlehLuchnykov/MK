@@ -30,12 +30,11 @@ function fight(firstPlayer, secondPlayer) {
   hitResult(secondPlayer.defence, firstPlayer.hit, firstPlayer.value, player2);
 
   if (player1.hp === 0 || player2.hp === 0) {
-    showFightResult();
-    console.dir(form);
-    form.disabled = true;
+    form.querySelector('button').disabled = true;
     createReloadButton();
   }
 
+  showFightResult();
 }
 
 

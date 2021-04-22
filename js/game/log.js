@@ -59,8 +59,7 @@ function generateLog(type, player1, player2, playerHitValue) {
       chatEl.insertAdjacentHTML('afterbegin', str);
       return;
     case 'end':
-      console.log(player1, player2);
-      str = `<p style="background-color: black;">${logs[type][randomizer(2)].replace('[playerWins]', player1.name).replace('[playerLose]', player2.name)}</p>`;
+      str = `<p style="background-color: black;">${logs[type][randomizer(3)].replace('[playerWins]', player1.name).replace('[playerLose]', player2.name)}</p>`;
       chatEl.insertAdjacentHTML('afterbegin', str);
       return;
     case 'draw':
