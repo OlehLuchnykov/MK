@@ -1,5 +1,5 @@
-import { createElement } from "../common/common.js";
-import { rootEl } from "./player.js";
+import { createElement } from '../common/common.js';
+import { rootEl } from './const.js';
 
 const createReloadButton = () => {
   const reloadBtnWrapEl = createElement('div', 'reloadWrap');
