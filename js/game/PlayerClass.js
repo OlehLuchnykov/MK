@@ -1,4 +1,5 @@
 import { createElement } from '../common/common.js';
+import { form, http } from './const.js';
 
 class Player {
   constructor(props) {
@@ -9,8 +10,21 @@ class Player {
     this.weapon = props.weapon;
   }
 
-  attack = () => {
-    console.log(`${this.name} Fight...`);
+  attack = async () => {
+    const attack = {};
+
+    for (let item of form) {
+      if (item.checked && item.name === 'hit') {
+        attack.hit = item.value;
+      }
+
+      if (item.checked && item.name === 'defence') {
+        attack.defence = item.value;
+      }
+
+      item.checked = false;
+    }
+    return await http.fight(attack);
   }
 
   changeHP = (hpValue) => {
@@ -28,7 +42,7 @@ class Player {
     this.elHP().style.width = `${this.hp}%`;
   }
 
-  createPlayer = ({player, hp, name, img}) => {
+  renderPlayer = ({player, hp, name, img}) => {
     const newPlayerBox = createElement('div', 'player' + player);
 
     const progressBarEl = createElement('div', 'progressbar');

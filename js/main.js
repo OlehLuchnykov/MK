@@ -1,4 +1,8 @@
 import Game from "./game/GameClass.js";
+import Http from "./http/Http.js"
+
+
+
 
 const game = new Game({
     player1: {
